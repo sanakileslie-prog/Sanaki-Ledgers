@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="theme-color" content="#6d28d9"><title>Budget</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light;--bg:#f4f5f7;--card:#fff;--tx:#12151c;--mut:#6b7280;--line:#e7e9ee;--sal:#7c3aed;--sal2:#efe9fe;--biz:#0f766e;--biz2:#dff3ef;--pos:#16a34a;--neg:#e5484d;--sh:0 1px 2px rgba(16,24,40,.06),0 6px 20px rgba(16,24,40,.05)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#0d1015;--card:#171b22;--tx:#eef0f4;--mut:#9aa3b2;--line:#262b35;--sal:#a78bfa;--sal2:#2a1a4d;--biz:#2dd4bf;--biz2:#0f2f2c;--pos:#4ade80;--neg:#ff6b70;--sh:none}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0d1015;--card:#171b22;--tx:#eef0f4;--mut:#9aa3b2;--line:#262b35;--sal:#a78bfa;--sal2:#2a1a4d;--biz:#2dd4bf;--biz2:#0f2f2c;--pos:#4ade80;--neg:#ff6b70;--sh:none}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.45 Inter,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+#app{max-width:620px;margin:0 auto;padding:18px 16px 60px}
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.logo{font-weight:800;font-size:20px;letter-spacing:-.02em}
+.mo{display:flex;align-items:center;gap:6px;background:var(--card);border-radius:999px;padding:4px;box-shadow:var(--sh)}
+.mo b{min-width:104px;text-align:center;font-size:13px;font-weight:600}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;touch-action:manipulation}
+.ic{width:38px;height:38px;border-radius:50%;font-size:18px;color:var(--mut)}
+.ic:hover{background:var(--bg)}
+.tabs{display:flex;gap:4px;background:var(--card);padding:4px;border-radius:14px;box-shadow:var(--sh);margin-bottom:16px}
+.tabs button{flex:1;padding:10px 2px;border-radius:10px;font-weight:600;font-size:13px;color:var(--mut)}
+.tabs button.on{background:var(--tx);color:var(--bg)}
+.card{background:var(--card);border-radius:20px;padding:18px;box-shadow:var(--sh);margin-bottom:14px}
+.lbl{font-size:12px;font-weight:600;color:var(--mut);text-transform:uppercase;letter-spacing:.06em}
+.big{font-size:34px;font-weight:800;letter-spacing:-.03em;margin:2px 0 12px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.stat{background:var(--bg);border-radius:14px;padding:10px 12px}
+.stat b{display:block;font-size:17px;letter-spacing:-.01em}
+.bar{height:9px;border-radius:9px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:9px;background:var(--acc);transition:width .4s}
+.bar.over i{background:var(--neg)}
+.hero{background:var(--hb,var(--acc));color:#fff}
+.hero .lbl{color:rgba(255,255,255,.8)}
+.hero .stat{background:rgba(255,255,255,.18)}
+.hero .bar{background:rgba(255,255,255,.28)}
+.hero .bar i{background:#fff}
+.sec{cursor:pointer;border:2px solid transparent}
+.sec:hover{border-color:var(--acc)}
+.pill{font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--acc2);color:var(--acc)}
+h3{margin:0 0 12px;font-size:16px}
+.cat{padding:11px 0;border-top:1px solid var(--line)}
+.cat:first-of-type{border-top:0}
+.cat .bar{margin-top:8px;height:7px}
+.mut{color:var(--mut);font-size:13px}
+.lim{width:100px;padding:8px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--tx);font:inherit;font-size:16px;text-align:right}
+.seg{display:flex;background:var(--bg);border-radius:12px;padding:3px;margin-bottom:10px}
+.seg button{flex:1;padding:8px;border-radius:9px;font-weight:600;font-size:14px;color:var(--mut)}
+.seg button.on{background:var(--card);color:var(--tx);box-shadow:var(--sh)}
+.f{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.f input,.f select{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--tx);font:inherit;font-size:16px}
+.f .w{grid-column:1/-1}
+.add{width:100%;margin-top:10px;padding:13px;border-radius:12px;background:var(--hb,var(--acc,#6d28d9));color:#fff;font-weight:700}
+.tx{display:flex;align-items:center;gap:12px;padding:11px 0;border-top:1px solid var(--line)}
+.tx:first-of-type{border-top:0}
+.dot{width:38px;height:38px;border-radius:12px;background:var(--acc2);color:var(--acc);display:grid;place-items:center;font-weight:800;flex:none}
+.tx .m{flex:1;min-width:0}
+.tx .m b{display:block;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pos{color:var(--pos);font-weight:700}.neg{font-weight:700}
+.x{color:var(--mut);font-size:20px;padding:8px 10px}
+.empty{text-align:center;color:var(--mut);padding:16px 0}
+.reset{display:block;margin:14px auto 0;color:var(--mut);font-size:13px;text-decoration:underline}
+.note{border:2px dashed var(--line)}.note .add{margin-top:10px}
+.chk{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:14px;color:var(--mut)}.chk input{width:18px;height:18px;flex:none}
+.w2{width:100%;margin-top:4px;padding:11px 12px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--tx);font:inherit;font-size:16px}
+.tx[data-a]{cursor:pointer}
+:root{--dbt:#ea580c;--dbt2:#ffedd5}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--dbt:#fb923c;--dbt2:#3b1d0c}}
+:root[data-theme="dark"]{--dbt:#fb923c;--dbt2:#3b1d0c}
+body{transition:background .3s,color .3s}
+body[data-tab="salary"]{color-scheme:dark;--bg:#150b26;--card:#21123b;--tx:#f3ecff;--mut:#a99bc9;--line:#35235a;--sal:#8b5cf6;--sal2:#33205c;--pos:#4ade80;--neg:#ff7b80;--sh:none}
+body[data-tab="salary"] .card{border:1px solid var(--line)}
+.ch{display:flex;gap:8px;height:120px;align-items:flex-end}.cc{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%}.cb{flex:1;width:100%;display:flex;align-items:flex-end;gap:3px}.cb i{flex:1;border-radius:4px 4px 0 0;min-height:2px}
+.bk{width:100%;padding:10px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--tx);font:16px/1.4 ui-monospace,Menlo,monospace;resize:vertical}
+.seg2{padding:12px;border-radius:12px;background:var(--bg);font-weight:700;border:1px solid var(--line)}
+.sg{display:grid;grid-template-columns:1fr 84px 84px;gap:8px;padding:9px 0;border-top:1px solid var(--line);font-size:14px;align-items:center}.sg>:nth-child(n+2){text-align:right}.sg.h{border-top:0;font-size:11px;font-weight:600;color:var(--mut);text-transform:uppercase;letter-spacing:.05em}
+</style></head>
+<body><div id="app"></div>
+<script>
+const CATS={salary:{inc:['Salary','Side income','From business','Other'],exp:['Rent','Food','Transport','Utilities','Savings','Fun','Other']},business:{inc:['Sales','Services','Other'],exp:['Materials','Labour','Transport','Marketing','Tools','Tax','Owner pay','Other']}};
+const NAME={salary:'9–5 Salary',business:'Business'};
+const ACC={salary:['--sal','--sal2'],business:['--biz','--biz2']};
+const HB={salary:'linear-gradient(135deg,#7c3aed,#3b1b7a)',business:'linear-gradient(135deg,#0f9488,#115e59)',debts:'linear-gradient(135deg,#ea580c,#9a3412)'};
+const fmt=n=>'GH₵'+Number(n).toLocaleString('en-GH',{maximumFractionDigits:2});
+const MON=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const iso=(n=0)=>{const d=new Date();d.setDate(d.getDate()+n);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};let editId=null,dtype='owed',S,tab='overview',ftype='expense',d=new Date(),ym=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+function seed(){const out=[],ms=[],now=new Date();let n=0;
+const A={sales:[11200,13800,9600,15400,12900,14100],svc:[2400,3100,1800,3600,2900,3300],mat:[4900,6200,4100,7000,5600,5900],lab:[2400,2400,2600,2800,2600,2800],food:[1650,1720,1580,1810,1690,1740],fun:[380,520,290,610,450,400]};
+for(let i=5;i>=0;i--){const j=5-i,d=new Date(now.getFullYear(),now.getMonth()-i,1),k=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'),cur=i===0,
+t=(sec,type,amt,cat,note,day)=>out.push({id:'s'+(n++),sec,type,amt,cat,note,date:k+'-'+String(cur?Math.min(day,now.getDate()):day).padStart(2,'0')});
+const tr=j===2?1500:2000;ms.push(k);
+t('salary','income',6500,'Salary','Monthly pay',1);
+if(j%2===0)t('salary','income',450,'Side income','Freelance gig',12);
+t('salary','income',tr,'From business','Owner pay received',10);
+t('salary','expense',1500,'Rent','Rent',2);
+t('salary','expense',Math.round(A.food[j]*.6),'Food','Groceries',4);
+t('salary','expense',Math.round(A.food[j]*.4),'Food','Eating out',15);
+t('salary','expense',320+j*15,'Transport','Fuel',6);
+t('salary','expense',210+j*8,'Utilities','ECG & water',9);
+t('salary','expense',800,'Savings','Savings transfer',5);
+t('salary','expense',A.fun[j],'Fun','Weekend & outings',20);
+t('salary','expense',140,'Other','Miscellaneous',22);
+t('business','income',A.sales[j],'Sales','Installation project',3);
+t('business','income',Math.round(A.sales[j]*.35),'Sales','Equipment supply',16);
+t('business','income',A.svc[j],'Services','Maintenance contract',7);
+t('business','expense',A.mat[j],'Materials','Equipment & parts',4);
+t('business','expense',A.lab[j],'Labour','Technicians',5);
+t('business','expense',520+j*20,'Transport','Site visits',8);
+t('business','expense',400,'Marketing','Ads & flyers',11);
+if(j%2)t('business','expense',260,'Tools','Tools',13);
+t('business','expense',600,'Tax','Tax set-aside',14);
+t('business','expense',tr,'Owner pay','Owner pay',10);
+t('business','expense',150,'Other','Admin',18);}
+out.push({id:'p1',sec:'business',type:'income',amt:7500,cat:'Sales',note:'Invoice: AC installation',date:iso(-10),pend:true,due:iso(-3)},{id:'p2',sec:'business',type:'income',amt:4200,cat:'Services',note:'Invoice: maintenance contract',date:iso(-2),pend:true,due:iso(12)});
+return{sample:true,open:{salary:3500,business:8000},tx:out,debts:[{id:'d1',dir:'owed',who:'Kofi Mensah',amt:800,paid:300,note:'Loan for rent',due:iso(7),date:iso(-30)},{id:'d2',dir:'owed',who:'Ama Serwaa',amt:250,paid:0,note:'Borrowed for school fees',due:iso(-5),date:iso(-20)},{id:'d3',dir:'owe',who:'Uncle Yaw',amt:1500,paid:500,note:'Start-up help',due:iso(30),date:iso(-60)},{id:'d4',dir:'owe',who:'CoolParts Ltd',amt:2200,paid:0,note:'Compressor parts on credit',due:iso(10),date:iso(-12)},{id:'d5',dir:'owed',who:'Kwame',amt:100,paid:100,note:'Lunch money',due:'',date:iso(-40)}],rec:[{id:'r1',sec:'salary',type:'income',amt:6500,cat:'Salary',note:'Monthly pay',day:1,done:ms.slice()},{id:'r2',sec:'salary',type:'expense',amt:1500,cat:'Rent',note:'Rent',day:2,done:ms.slice()},{id:'r3',sec:'business',type:'expense',amt:600,cat:'Tax',note:'Tax set-aside',day:14,done:ms.slice()}],bud:{salary:{Rent:1500,Food:1800,Transport:450,Utilities:300,Savings:800,Fun:500,Other:200},business:{Materials:6000,Labour:2800,Transport:700,Marketing:500,Tools:300,Tax:600,'Owner pay':2000,Other:200}}}}
+try{S=JSON.parse(localStorage.getItem('bud1'))}catch(e){}
+if(!S)S=seed();
+const save=()=>{try{localStorage.setItem('bud1',JSON.stringify(S))}catch(e){}};
+const inM=s=>S.tx.filter(x=>x.date.startsWith(ym)&&(!s||x.sec===s));
+const TR=new Set(['From business','Owner pay']);let armed=false;
+const esc=t=>String(t).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+const sfx=n=>(n%100>10&&n%100<14)?'th':['th','st','nd','rd'][n%10]||'th';
+const owed=()=>S.tx.filter(x=>x.pend).reduce((a,x)=>a+x.amt,0);
+function drow(d){const r=d.amt-d.paid,od=d.due&&d.due<iso();return`<div class="cat"><div class="row"><div class="m" style="min-width:0"><b>${esc(d.who)}</b><div class="mut" style="${od?'color:var(--neg);font-weight:600':''}">${esc(d.note||'')}${d.note&&d.due?' · ':''}${d.due?(od?'Overdue · ':'Due ')+d.due.slice(8)+' '+MON[+d.due.slice(5,7)-1].slice(0,3):''}${d.paid>0?`<br>Paid ${fmt(d.paid)} of ${fmt(d.amt)}`:''}</div></div><b>${fmt(r)}</b></div><div class="row" style="margin-top:8px;gap:8px"><input class="lim" style="flex:1;width:auto" type="number" min="0" inputmode="decimal" placeholder="Amount (blank = all ${fmt(r)})" data-pay="${d.id}"><button class="seg2" style="padding:9px 12px" data-a="dpay" data-v="${d.id}">${d.dir==='owed'?'Received':'Paid'}</button><button class="x" data-a="ddel" data-v="${d.id}" aria-label="Delete">×</button></div></div>`}
+function ovDebts(){const L=(S.debts||[]).filter(d=>d.amt-d.paid>0.005),a=L.filter(d=>d.dir==='owed').reduce((s,d)=>s+d.amt-d.paid,0),b=L.filter(d=>d.dir==='owe').reduce((s,d)=>s+d.amt-d.paid,0);if(!a&&!b)return'';return`<div class="card sec" data-a="tab" data-v="debts" style="--acc:var(--dbt);--acc2:var(--dbt2)"><div class="row"><h3 style="margin:0">Debts</h3><span class="pill">${L.length} open</span></div><div class="stats"><div class="stat"><span class="mut">Owed to me</span><b>${fmt(a)}</b></div><div class="stat"><span class="mut">I owe</span><b>${fmt(b)}</b></div></div></div>`}
+function debts(){const L=S.debts||[],rem=d=>d.amt-d.paid,open=L.filter(d=>rem(d)>0.005),done=L.filter(d=>rem(d)<=0.005),by=(a,b)=>(a.due||'9999').localeCompare(b.due||'9999'),ds=k=>open.filter(d=>d.dir===k).reduce((a,d)=>a+rem(d),0),inv=owed(),a=ds('owed')+inv,b=ds('owe');
+const lst=k=>open.filter(d=>d.dir===k).sort(by).map(drow).join('');
+const owedRows=(inv?`<div class="cat" data-a="tab" data-v="business" style="cursor:pointer"><div class="row"><div><b>Client invoices</b><div class="mut">Unpaid business invoices · tap to view</div></div><b>${fmt(inv)}</b></div></div>`:'')+lst('owed'),oweRows=lst('owe'),em='<div class="empty">Nothing here</div>';
+return`<div style="--acc:var(--dbt);--acc2:var(--dbt2);--hb:${HB.debts}"><div class="card hero"><div class="lbl">Net position</div><div class="big">${sgn(a-b)}</div><div class="stats"><div class="stat"><span style="opacity:.8">Owed to me</span><b>${fmt(a)}</b></div><div class="stat"><span style="opacity:.8">I owe</span><b>${fmt(b)}</b></div></div></div>
+<div class="card"><h3>Add a debt</h3><div class="seg"><button data-a="dtype" data-v="owed" class="${dtype==='owed'?'on':''}">Someone owes me</button><button data-a="dtype" data-v="owe" class="${dtype==='owe'?'on':''}">I owe someone</button></div><div class="f"><input id="dwho" class="w" placeholder="Person or company"><input id="damt" type="number" min="0" inputmode="decimal" placeholder="Amount (GH₵)"><input id="ddue" type="date" aria-label="Due date"><input id="dnote" class="w" placeholder="What it is for (optional)"></div><div class="mut" style="margin-top:6px">The date is the due date, and it is optional.</div><button class="add" data-a="dadd">Add</button></div>
+<div class="card"><h3>Owed to me</h3>${owedRows||em}</div><div class="card"><h3>I owe</h3>${oweRows||em}</div>
+<div class="card"><h3>Repayments and your balance</h3><div class="mut" style="margin-bottom:8px">When you tap Received or Paid, a matching entry can be added to one of your balances.</div><select id="dlink" class="w2">${[['','Do not add to my balance'],['salary','Add to 9–5 Salary balance'],['business','Add to Business balance']].map(([k,l])=>`<option value="${k}"${(S.dlink||'')===k?' selected':''}>${l}</option>`).join('')}</select></div>
+${done.length?`<div class="card"><h3>Settled</h3>${done.slice(-8).reverse().map(d=>`<div class="tx"><div class="m"><b>${esc(d.who)}</b><span class="mut">${d.dir==='owed'?'Paid you':'You paid'}${d.note?' · '+esc(d.note):''}</span></div><span class="mut">${fmt(d.amt)}</span><button class="x" data-a="ddel" data-v="${d.id}" aria-label="Delete">×</button></div>`).join('')}</div>`:''}</div>`}
+function applyRec(){const t=iso(),now=t.slice(0,7);(S.rec=S.rec||[]).forEach(r=>{let[y,m]=(r.done[0]||now).split('-').map(Number);for(;;){const k=y+'-'+String(m).padStart(2,'0');if(k>now)break;const dt=k+'-'+String(r.day).padStart(2,'0');if(!r.done.includes(k)&&dt<=t){S.tx.push({id:Math.random().toString(36).slice(2),sec:r.sec,type:r.type,amt:r.amt,cat:r.cat,note:r.note,date:dt,rid:r.id});r.done.push(k)}m++;if(m>12){m=1;y++}}})}
+function recCard(s){const rs=(S.rec||[]).filter(r=>r.sec===s);return`<div class="card"><h3>Recurring monthly</h3>${rs.length?rs.map(r=>`<div class="tx"><div class="dot">↻</div><div class="m"><b>${esc(r.note||r.cat)}</b><span class="mut">${r.cat} · every ${r.day}${sfx(r.day)}</span></div><span class="${r.type==='income'?'pos':'neg'}">${r.type==='income'?'+':'−'}${fmt(r.amt)}</span><button class="x" data-a="rdel" data-v="${r.id}" aria-label="Remove">×</button></div>`).join(''):'<div class="empty">Nothing yet. Tick “Repeat every month” when you add an entry.</div>'}</div>`}
+function owedCard(){const l=S.tx.filter(x=>x.pend&&x.sec==='business').sort((a,b)=>(a.due||'').localeCompare(b.due||''));if(!l.length)return'';const t=iso();return`<div class="card"><div class="row"><div class="lbl">Clients owe you</div><span class="pill">${l.length} unpaid</span></div><div class="big" style="margin-bottom:8px">${fmt(l.reduce((a,x)=>a+x.amt,0))}</div>${l.map(x=>{const od=x.due&&x.due<t;return`<div class="tx"><div class="m"><b>${esc(x.note||x.cat)}</b><span class="mut" style="${od?'color:var(--neg);font-weight:600':''}">${od?'Overdue · ':'Due '}${x.due?x.due.slice(8)+' '+MON[+x.due.slice(5,7)-1].slice(0,3):'no date'}</span></div><b>${fmt(x.amt)}</b><button class="seg2" style="padding:8px 12px" data-a="paid" data-v="${x.id}">Mark paid</button></div>`}).join('')}</div>`}
+const PRE={bal:{n:'Balanced',d:'50% needs · 30% wants · 20% savings',w:{Rent:25,Food:12,Transport:8,Utilities:5,Fun:18,Other:12,Savings:20}},sav:{n:'Saver',d:'50% needs · 20% wants · 30% savings',w:{Rent:25,Food:12,Transport:8,Utilities:5,Fun:12,Other:8,Savings:30}},tight:{n:'Tight',d:'60% needs · 20% wants · 20% savings',w:{Rent:30,Food:15,Transport:9,Utilities:6,Fun:12,Other:8,Savings:20}}};
+const base=()=>S.pay>0?S.pay:sum('salary','income','Salary');
+const sum=(s,type,cat)=>inM(s).filter(x=>x.type===type&&!x.pend&&(!cat||x.cat===cat)&&(s||!TR.has(x.cat))).reduce((a,x)=>a+x.amt,0);
+const pct=(a,b)=>b>0?Math.min(100,a/b*100):0;
+function head(){const[y,m]=ym.split('-');return`<div class="top"><div class="logo">Budget</div><div class="mo"><button class="ic" data-a="prev">‹</button><b>${MON[+m-1]} ${y}</b><button class="ic" data-a="next">›</button></div></div>
+<div class="tabs">${[['overview','Overview'],['salary','9–5 Salary'],['business','Business'],['debts','Debts']].map(([k,l])=>`<button data-a="tab" data-v="${k}" class="${tab===k?'on':''}">${l}</button>`).join('')}</div>`}
+function overview(){const i=sum(0,'income'),e=sum(0,'expense');
+const secs=['salary','business'].map(s=>{const si=sum(s,'income'),se=sum(s,'expense');return`<div class="card sec" data-a="tab" data-v="${s}" style="--acc:var(${ACC[s][0]});--acc2:var(${ACC[s][1]})"><div class="row"><h3 style="margin:0">${NAME[s]}</h3><span class="pill">${si-se>=0?'+':'−'}${fmt(Math.abs(si-se))}</span></div>
+<div class="stats"><div class="stat"><span class="mut">Income</span><b>${fmt(si)}</b></div><div class="stat"><span class="mut">Spent</span><b>${fmt(se)}</b></div></div>
+<div class="bar ${se>si?'over':''}" style="margin-top:12px"><i style="width:${pct(se,si)}%"></i></div></div>`}).join('');
+return`${ovBal()}${ovDebts()}<div class="card hero" style="--hb:#2b2f3b"><div class="lbl">This month · net</div><div class="big">${i-e<0?'−':''}${fmt(Math.abs(i-e))}</div>
+<div class="bar"><i style="width:${pct(e,i)}%"></i></div>
+<div class="stats"><div class="stat"><span style="opacity:.8">Income</span><b>${fmt(i)}</b></div><div class="stat"><span style="opacity:.8">Spent</span><b>${fmt(e)}</b></div></div></div>${secs}`}
+function section(s){const ed=editId?S.tx.find(x=>x.id===editId&&x.sec===s):null;const i=sum(s,'income'),e=sum(s,'expense'),left=i-e,c=CATS[s];
+const cats=c.exp.map(k=>{const sp=sum(s,'expense',k),l=S.bud[s][k]||0;return`<div class="cat"><div class="row"><div><b>${k}</b><div class="mut">${fmt(sp)} of ${fmt(l)}</div></div><input class="lim" type="number" min="0" inputmode="decimal" value="${l}" data-lim="${k}" aria-label="${k} limit"></div><div class="bar ${l&&sp>l?'over':''}"><i style="width:${pct(sp,l)}%"></i></div></div>`}).join('');
+const list=inM(s).sort((a,b)=>b.date.localeCompare(a.date));
+const txs=list.length?list.map(x=>`<div class="tx" data-a="edit" data-v="${x.id}"><div class="dot">${x.cat[0]}</div><div class="m"><b>${esc(x.note||x.cat)}${x.pend?' <span class="pill" style="background:var(--line);color:var(--mut)">Pending</span>':''}</b><span class="mut">${x.cat} · ${x.date.slice(8)} ${MON[+x.date.slice(5,7)-1].slice(0,3)}</span></div><span class="${x.pend?'mut':x.type==='income'?'pos':'neg'}">${x.type==='income'?'+':'−'}${fmt(x.amt)}</span><button class="x" data-a="del" data-v="${x.id}" aria-label="Delete">×</button></div>`).join(''):'<div class="empty">No transactions yet this month</div>';
+const today=new Date().toISOString().slice(0,10);const dv=today.startsWith(ym)?today:ym+'-01';
+return`<div style="--acc:var(${ACC[s][0]});--acc2:var(${ACC[s][1]});--hb:${HB[s]}"><div class="card hero"><div class="lbl">${NAME[s]} · left this month</div><div class="big">${left<0?'−':''}${fmt(Math.abs(left))}</div><div class="bar"><i style="width:${pct(e,i)}%"></i></div>
+<div class="stats"><div class="stat"><span style="opacity:.8">Income</span><b>${fmt(i)}</b></div><div class="stat"><span style="opacity:.8">Spent</span><b>${fmt(e)}</b></div></div></div>
+${cash(s)}${s==='business'?owedCard():''}<div class="card"><h3>${ed?'Edit transaction':'Add transaction'}</h3><div class="seg"><button data-a="ftype" data-v="expense" class="${ftype==='expense'?'on':''}">Expense</button><button data-a="ftype" data-v="income" class="${ftype==='income'?'on':''}">Income</button></div>
+<div class="f"><input id="amt" value="${ed?ed.amt:''}" type="number" min="0" inputmode="decimal" placeholder="Amount (GH₵)"><select id="cat">${c[ftype==='income'?'inc':'exp'].map(k=>`<option${ed&&ed.cat===k?' selected':''}>${k}</option>`).join('')}</select><input id="note" value="${ed?esc(ed.note||''):''}" class="w" placeholder="Note (optional)"><input id="dt" class="w" type="date" value="${ed?ed.date:dv}"></div>
+${ed?'':`<label class="chk"><input type="checkbox" id="rep"> Repeat every month</label>`}${s==='business'&&ftype==='income'?`<label class="chk"><input type="checkbox" id="pend"${ed&&ed.pend?' checked':''}> Client hasn’t paid yet (invoice)</label><div id="duew" style="display:${ed&&ed.pend?'block':'none'}"><div class="mut" style="margin-top:8px">Due date</div><input id="due" class="w2" type="date" value="${ed&&ed.due||iso(14)}"></div>`:''}<button class="add" data-a="add">${ed?'Save changes':'Add '+ftype}</button>${ed?'<button class="reset" data-a="cancel">Cancel</button>':''}</div>
+${s==='salary'?suggest():''}<div class="card"><h3>Category budgets</h3>${cats}</div>
+${recCard(s)}<div class="card"><h3>Transactions</h3>${txs}</div></div>`}
+const op=s=>(S.open&&S.open[s])||0;
+const tot=(s,t)=>S.tx.filter(x=>x.type===t&&!x.pend&&(s?x.sec===s:!TR.has(x.cat))).reduce((a,x)=>a+x.amt,0);
+const net=s=>S.tx.filter(x=>!x.pend&&(!s||x.sec===s)).reduce((a,x)=>a+(x.type==='income'?x.amt:-x.amt),0);
+const bal=s=>s?op(s)+net(s):op('salary')+op('business')+net(0);
+const sgn=n=>(n<0?'−':'')+fmt(Math.abs(n));
+function cash(s){return`<div class="card"><div class="row"><div class="lbl">${NAME[s]} balance</div><span class="pill">All time</span></div><div class="big" style="margin-bottom:10px">${sgn(bal(s))}</div><div class="stats"><div class="stat"><span class="mut">Total earned</span><b class="pos">${fmt(tot(s,'income'))}</b></div><div class="stat"><span class="mut">Total spent</span><b>${fmt(tot(s,'expense'))}</b></div></div><div class="row" style="margin-top:12px"><span class="mut">Starting balance (money already there)</span><input class="lim" type="number" inputmode="decimal" data-open="1" value="${op(s)||''}" placeholder="0" aria-label="Starting balance"></div></div>`}
+function ovBal(){return`<div class="card hero" style="--hb:linear-gradient(135deg,#6d28d9,#0f766e)"><div class="lbl">Total balance</div><div class="big">${sgn(bal(0))}</div><div class="stats"><div class="stat"><span style="opacity:.8">9–5 Salary</span><b>${sgn(bal('salary'))}</b></div><div class="stat"><span style="opacity:.8">Business</span><b>${sgn(bal('business'))}</b></div></div></div><div class="card"><div class="lbl">All time</div><div class="stats"><div class="stat"><span class="mut">Total earned</span><b class="pos">${fmt(tot(0,'income'))}</b></div><div class="stat"><span class="mut">Total spent</span><b>${fmt(tot(0,'expense'))}</b></div></div>${owed()?`<div class="row" style="margin-top:12px"><span class="mut">Clients owe you</span><b>${fmt(owed())}</b></div>`:''}</div>`}
+function suggest(){const b=base(),P=PRE[S.preset||'bal'];
+const rows=b>0?`<div class="sg h"><span>Category</span><span>Now</span><span>Suggested</span></div>`+CATS.salary.exp.map(k=>`<div class="sg"><span>${k} <span class="mut">${P.w[k]}%</span></span><span class="mut">${fmt(S.bud.salary[k]||0)}</span><b>${fmt(Math.round(b*P.w[k]/1000)*10)}</b></div>`).join('')+`<button class="add" data-a="apply">Apply to my budgets</button>`:`<div class="empty">Enter your take-home pay above, or log your salary, to see suggestions.</div>`;
+return`<div class="card"><h3>Smart budget</h3><div class="mut" style="margin-bottom:10px">Suggested limits based on your monthly take-home pay${b>0?' of '+fmt(b):''}${b>0&&!S.pay?' (from salary logged this month)':''}.</div><div class="f"><input id="pay" class="w" type="number" min="0" inputmode="decimal" placeholder="Monthly take-home (GH₵)" value="${S.pay||''}"></div><div class="seg" style="margin:10px 0 6px">${Object.entries(PRE).map(([k,p])=>`<button data-a="pre" data-v="${k}" class="${(S.preset||'bal')===k?'on':''}">${p.n}</button>`).join('')}</div><div class="mut" style="margin-bottom:6px">${P.d}</div>${rows}</div>`}
+function banner(){return S.sample?`<div class="card note"><b>You’re viewing sample data</b><div class="mut">Clear it to start with your own numbers. Your budget limits are kept.</div><button class="add" data-a="fresh">Start fresh</button></div>`:''}
+function chart(){const o=[];let[y,m]=ym.split('-').map(Number);for(let n=0;n<6;n++){const k=y+'-'+String(m).padStart(2,'0'),r=S.tx.filter(x=>x.date.startsWith(k)&&!x.pend&&!TR.has(x.cat));o.unshift({k:MON[m-1].slice(0,3),i:r.filter(x=>x.type==='income').reduce((a,x)=>a+x.amt,0),e:r.filter(x=>x.type==='expense').reduce((a,x)=>a+x.amt,0)});m--;if(m<1){m=12;y--}}
+const mx=Math.max(1,...o.map(x=>Math.max(x.i,x.e)));
+return`<div class="card"><h3>Last 6 months</h3><div class="ch">${o.map(x=>`<div class="cc"><div class="cb"><i style="height:${x.i/mx*100}%;background:var(--pos)"></i><i style="height:${x.e/mx*100}%;background:var(--neg)"></i></div><span class="mut">${x.k}</span></div>`).join('')}</div><div class="mut" style="margin-top:8px">Green income · red spent. Owner pay and transfers from business are left out so nothing is counted twice.</div></div>`}
+function backup(){return`<div class="card"><h3>Backup &amp; move to another device</h3><div class="mut" style="margin-bottom:8px">Your data is saved in this browser only. Tap Export, copy the text, then paste it here on your other device and tap Import.</div><textarea id="bk" class="bk" rows="3" placeholder="Backup text appears here"></textarea><div class="f" style="margin-top:8px"><button class="seg2" data-a="exp">Export</button><button class="seg2" data-a="imp">Import</button></div><button class="reset" data-a="sample">Load sample data</button><button class="reset" data-a="reset">Erase everything</button></div>`}
+function render(){armed=false;document.body.dataset.tab=tab;document.getElementById('app').innerHTML=head()+banner()+(tab==='overview'?overview()+chart()+backup():tab==='debts'?debts():section(tab))}
+document.addEventListener('click',e=>{const t=e.target.closest('[data-a]');if(!t)return;const a=t.dataset.a,v=t.dataset.v;
+if(a==='tab'){tab=v;editId=null;render()}
+else if(a==='prev'||a==='next'){let[y,m]=ym.split('-').map(Number);m+=a==='next'?1:-1;if(m<1){m=12;y--}if(m>12){m=1;y++}ym=y+'-'+String(m).padStart(2,'0');render()}
+else if(a==='ftype'){ftype=v;render()}
+else if(a==='del'){if(editId===v)editId=null;S.tx=S.tx.filter(x=>x.id!==v);save();render()}
+else if(a==='reset'){if(!armed){armed=true;t.textContent='Tap again to erase everything';return}S={tx:[],bud:seed().bud,sample:false};save();render()}
+else if(a==='dtype'){dtype=v;render()}
+else if(a==='dadd'){const g=id=>document.getElementById(id),amt=parseFloat(g('damt').value),who=g('dwho').value.trim();if(!who){g('dwho').focus();return}if(!(amt>0)){g('damt').focus();return}(S.debts=S.debts||[]).push({id:Math.random().toString(36).slice(2),dir:dtype,who,amt,paid:0,note:g('dnote').value.trim(),due:g('ddue').value||'',date:iso()});save();render()}
+else if(a==='dpay'){const d=(S.debts||[]).find(x=>x.id===v);if(d){const r=d.amt-d.paid,inp=document.querySelector('[data-pay="'+v+'"]');let p=parseFloat(inp&&inp.value);if(!(p>0))p=r;p=Math.min(p,r);d.paid+=p;if(S.dlink)S.tx.push({id:Math.random().toString(36).slice(2),sec:S.dlink,type:d.dir==='owed'?'income':'expense',amt:p,cat:'Other',note:(d.dir==='owed'?'Repaid by ':'Paid to ')+d.who,date:iso()});save();render()}}
+else if(a==='ddel'){S.debts=(S.debts||[]).filter(x=>x.id!==v);save();render()}
+else if(a==='edit'){const x=S.tx.find(x=>x.id===v);if(x){editId=v;ftype=x.type;render();document.getElementById('amt').scrollIntoView({block:'center'})}}
+else if(a==='cancel'){editId=null;render()}
+else if(a==='paid'){const x=S.tx.find(x=>x.id===v);if(x){x.pend=false;x.date=iso();delete x.due;save();render()}}
+else if(a==='rdel'){S.rec=(S.rec||[]).filter(r=>r.id!==v);save();render()}
+else if(a==='pre'){S.preset=v;save();render()}
+else if(a==='apply'){const b=base(),P=PRE[S.preset||'bal'];CATS.salary.exp.forEach(k=>S.bud.salary[k]=Math.round(b*P.w[k]/1000)*10);save();render()}
+else if(a==='sample'){S=seed();save();render()}
+else if(a==='fresh'){S.tx=[];S.open={salary:0,business:0};S.sample=false;save();render()}
+else if(a==='exp'){const b=document.getElementById('bk');b.value=JSON.stringify(S);b.select();try{navigator.clipboard.writeText(b.value).catch(()=>{})}catch(e){}}
+else if(a==='imp'){const b=document.getElementById('bk');try{const o=JSON.parse(b.value);if(!Array.isArray(o.tx)||!o.bud)throw 0;S=o;save();render()}catch(e){b.value='';b.placeholder='That is not a valid backup. Paste the exported text here.'}}
+else if(a==='add'){const amt=parseFloat(document.getElementById('amt').value);if(!(amt>0)){document.getElementById('amt').focus();return}
+const q=id=>document.getElementById(id),pend=!!(q('pend')&&q('pend').checked),rep=!!(q('rep')&&q('rep').checked&&!pend);
+const o={sec:tab,type:ftype,amt,cat:q('cat').value,note:q('note').value.trim(),date:q('dt').value||iso()};
+if(pend){o.pend=true;o.due=q('due').value||iso(14)}
+if(editId){const x=S.tx.find(x=>x.id===editId);if(x){Object.assign(x,o);if(!pend){delete x.pend;delete x.due}}editId=null}
+else{o.id=Math.random().toString(36).slice(2);if(rep){const r={id:'r'+o.id,sec:o.sec,type:o.type,amt:o.amt,cat:o.cat,note:o.note,day:Math.min(28,+o.date.slice(8)),done:[o.date.slice(0,7)]};(S.rec=S.rec||[]).push(r);o.rid=r.id}S.tx.push(o)}
+save();render()}});
+document.addEventListener('change',e=>{if(e.target.id==='dlink'){S.dlink=e.target.value;save();return}if(e.target.id==='pend'){document.getElementById('duew').style.display=e.target.checked?'block':'none';return}if(e.target.dataset.open){S.open=S.open||{};S.open[tab]=parseFloat(e.target.value)||0;save();render();return}if(e.target.id==='pay'){S.pay=Math.max(0,parseFloat(e.target.value)||0);save();render();return}const k=e.target.dataset.lim;if(k&&tab!=='overview'){S.bud[tab][k]=Math.max(0,parseFloat(e.target.value)||0);save();render()}});
+applyRec();save();render();
+</script></body></html>
